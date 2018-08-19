@@ -15,12 +15,13 @@ public class MatchesViewActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_matches_view);
-        teamNameTV = (TextView)findViewById(R.id.teamName);
-        afterParse = (TextView)findViewById(R.id.afterParse);
+        teamNameTV = findViewById(R.id.teamName);
+        afterParse = findViewById(R.id.afterParse);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             teamName = extras.getString("teamName");
         }
+
         teamNameTV.setText(teamName);
         ParseHtml parseHtml = new ParseHtml(teamName);
         parseHtml.parse();
