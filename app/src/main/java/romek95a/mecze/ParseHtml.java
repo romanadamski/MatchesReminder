@@ -15,33 +15,46 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class ParseHtml {
     ParseHtml(String teamName){
         this.teamName = teamName;
     }
     String teamName;
-    public void parse(){
+    public List<String> parse(){
         AsyncParse asyncParse = new AsyncParse();
-        asyncParse.execute();
+        try {
+            return asyncParse.execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
-    class AsyncParse extends AsyncTask<String, Void, Void> {
+    class AsyncParse extends AsyncTask<String, Void, List<String>> {
         @Override
-        protected Void doInBackground(String... strings) {
+        protected List<String> doInBackground(String... strings) {
             try {
                 String link = "http://www.google.com/search?q=" + teamName;
-                String classMatch = "div.abhAW";
-                List<String> jslki = new ArrayList<>();
+                String classFirstMatch = "div.abhAW";
+                String classnextMatches = "div.bkWMgd";
+                List<String> nextTeams = new ArrayList<>();
                 Document doc = Jsoup.connect(link).get();
                 Log.d("Link:", link);
-                Elements elements = doc.select(classMatch);
+                Elements firstMatch = doc.select(classFirstMatch);
+                Elements nextMatches = doc.select(classnextMatches);
                 MatchesHandler.nextTeams.clear();
-                for(Element elem: elements) {
-                    //System.out.println(elem);
-                    MatchesHandler.nextTeams.add(elem.text());
+                for(Element elem: firstMatch) {
+                    nextTeams.add(elem.text());
                 }
-                System.out.println("sizeeee " + MatchesHandler.nextTeams.size());
-                System.out.println("jslki" + MatchesHandler.nextTeams);
+                for(Element elem: nextMatches) {
+                    nextTeams.add(elem.text());
+                }
+                System.out.println("sizeeee " + nextTeams.size());
+                System.out.println("nextTeams" + nextTeams.get(1));
+                return nextTeams;
             } catch (IOException e) {
                 e.printStackTrace();
             }

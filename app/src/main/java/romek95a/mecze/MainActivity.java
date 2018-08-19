@@ -1,9 +1,15 @@
 package romek95a.mecze;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -13,6 +19,9 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -25,6 +34,7 @@ public class MainActivity extends Activity {
     private ListView teamsListView;
     private EditText team;
     private Button addTeam;
+    private String teamToDelete = "";
 
     private int counter=0;
 
@@ -49,15 +59,7 @@ public class MainActivity extends Activity {
                 }
             }
         });
-        /*teamsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Context context = getApplicationContext();
-                Intent intent = new Intent(context,MatchesViewActivity.class);
-                intent.putExtra("teamName", listOfTeams.get(position));
-                startActivity(intent);
-            }
-        });*/
+
     }
     @Override
     protected void onPause() {
@@ -84,17 +86,65 @@ public class MainActivity extends Activity {
     }
 
     public void showMatchesHandler(View v){
-        RelativeLayout vwParentRow = (RelativeLayout)v.getParent();
-        Button buttonShow = (Button)vwParentRow.getChildAt(1);
-        Context context = getApplicationContext();
-        Intent intent = new Intent(context,MatchesViewActivity.class);
-        intent.putExtra("teamName", buttonShow.getText());
-        startActivity(intent);
+        if(!isOnline()){
+            noInternetDialog().show();
+        }
+        else{
+            RelativeLayout vwParentRow = (RelativeLayout)v.getParent();
+            Button buttonShow = (Button)vwParentRow.getChildAt(1);
+            Context context = getApplicationContext();
+            Intent intent = new Intent(context,MatchesViewActivity.class);
+            intent.putExtra("teamName", buttonShow.getText());
+            startActivity(intent);
+        }
+
     }
     public void deleteTeamHandler(View v){
         RelativeLayout vwParentRow = (RelativeLayout)v.getParent();
         Button buttonShow = (Button)vwParentRow.getChildAt(1);
-        teamsAdapter.remove(buttonShow.getText().toString());
+        teamToDelete = buttonShow.getText().toString();
+        deleteDialog().show();
         vwParentRow.refreshDrawableState();
     }
+
+    private Dialog deleteDialog() {
+        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        dialogBuilder.setTitle("Usuwanie drużyny");
+        dialogBuilder.setMessage("Czy na pewno chcesz usunąć " + teamToDelete + "?");
+        dialogBuilder.setNegativeButton("Nie", new Dialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int whichButton) {
+
+            }
+        });
+        dialogBuilder.setPositiveButton("Tak", new Dialog.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int whichButton) {
+                teamsAdapter.remove(teamToDelete);
+            }
+        });
+
+        dialogBuilder.setCancelable(false);
+        return dialogBuilder.create();
+    }
+
+    private Dialog noInternetDialog() {
+        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        dialogBuilder.setTitle("Brak połączenia");
+        dialogBuilder.setMessage("Brak dostępu do Internetu. Włącz Wi-Fi lub transmisję danych.");
+        dialogBuilder.setNegativeButton("OK", new Dialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int whichButton) {
+
+            }
+        });
+        dialogBuilder.setCancelable(false);
+        return dialogBuilder.create();
+    }
+    public boolean isOnline() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
 }

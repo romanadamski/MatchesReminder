@@ -24,7 +24,6 @@ public class MatchesViewActivity extends Activity {
 
         teamNameTV.setText(teamName);
         ParseHtml parseHtml = new ParseHtml(teamName);
-        parseHtml.parse();
-        afterParse.setText(MatchesHandler.nextTeams.toString());
+        afterParse.setText(parseHtml.parse().toString());
     }
 }
