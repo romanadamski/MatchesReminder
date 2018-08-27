@@ -60,6 +60,7 @@ public class MatchesViewActivity extends Activity {
             separator.setText("-");
         }
         else{
+            firstLeagueTime.setVisibility(View.GONE);
             firstTeamHomeName.setVisibility(View.GONE);
             firstTeamAwayName.setVisibility(View.GONE);
             firstTeamHomeScore.setVisibility(View.GONE);

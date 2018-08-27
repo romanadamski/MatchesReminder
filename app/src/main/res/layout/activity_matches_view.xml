@@ -16,7 +16,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/teamName"/>
+                android:textColor="#dadada"
+                android:id="@+id/teamName"
+                android:layout_margin="15dp"
+                android:textSize="20dp"
+                android:textStyle="bold"/>
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -26,12 +30,14 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/firstLeagueTime"
                     android:gravity="center"
+                    android:textColor="#d6d6d6"
                     android:layout_marginRight="10dp"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/firstDuring"
                     android:layout_toRightOf="@id/firstLeagueTime"
+                    android:textColor="#d6d6d6"
                     android:layout_alignParentRight="true"/>
             </LinearLayout>
             <LinearLayout
@@ -45,6 +51,7 @@
                     android:id="@+id/firstTeamHomeName"
                     android:layout_alignParentRight="true"
                     android:singleLine="true"
+                    android:textColor="#d6d6d6"
                     android:layout_margin="10dp"/>
                 <TextView
                     android:layout_width="match_parent"
@@ -52,6 +59,7 @@
                     android:id="@+id/firstTeamHomeScore"
                     android:layout_toRightOf="@id/firstTeamHomeName"
                     android:layout_alignParentRight="true"
+                    android:textColor="#d6d6d6"
                     android:layout_margin="10dp"/>
                 <TextView
                     android:layout_width="match_parent"
@@ -59,6 +67,7 @@
                     android:id="@+id/separator"
                     android:layout_toRightOf="@id/firstTeamHomeScore"
                     android:layout_alignParentRight="true"
+                    android:textColor="#d6d6d6"
                     android:layout_margin="10dp"/>
                 <TextView
                     android:layout_width="match_parent"
@@ -66,6 +75,7 @@
                     android:id="@+id/firstTeamAwayScore"
                     android:layout_toRightOf="@id/separator"
                     android:layout_alignParentRight="true"
+                    android:textColor="#d6d6d6"
                     android:layout_margin="10dp"/>
                 <TextView
                     android:layout_width="match_parent"
@@ -73,6 +83,7 @@
                     android:id="@+id/firstTeamAwayName"
                     android:layout_toRightOf="@id/firstTeamAwayScore"
                     android:layout_alignParentRight="true"
+                    android:textColor="#d6d6d6"
                     android:layout_margin="10dp"/>
             </LinearLayout>
             <LinearLayout
@@ -80,7 +91,8 @@
                 android:layout_height="wrap_content">
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:textColor="#d6d6d6"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

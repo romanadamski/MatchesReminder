@@ -8,14 +8,24 @@
         android:id="@+id/delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="deleteTeamHandler"
         android:text="x"
-        android:onClick="deleteTeamHandler"/>
+        android:textColor="#b4b4b4"
+        android:layout_marginVertical="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/selector_delete"/>
     <Button
         android:id="@+id/singleTeam"
         android:textAlignment="textStart"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:layout_toRightOf="@id/delete"
-        android:onClick="showMatchesHandler"/>
+        android:onClick="showMatchesHandler"
+        android:layout_marginRight="5dp"
+        android:paddingLeft="10dp"
+        android:layout_marginVertical="5dp"
+        android:textColor="#b4b4b4"
+        android:background="@drawable/selector_choose"/>
 </RelativeLayout>

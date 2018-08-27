@@ -7,14 +7,17 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.PorterDuff;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -35,16 +38,15 @@ public class MainActivity extends Activity {
     private EditText team;
     private Button addTeam;
     private String teamToDelete = "";
-
-    private int counter=0;
+    private boolean isPressed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        teamsListView=(ListView) findViewById(R.id.list);
-        listOfTeams= new ArrayList<String>();
+        teamsListView=findViewById(R.id.list);
+        listOfTeams= new ArrayList<>();
         teamsAdapter=new TeamsAdapter(this,listOfTeams);
         teamsListView.setAdapter(teamsAdapter);
         team = findViewById(R.id.team);
@@ -68,7 +70,6 @@ public class MainActivity extends Activity {
         SharedPreferences.Editor editor = sharedPref.edit();
         Set<String> hashOfTeams = new HashSet<>();
         Set<String> temp = new HashSet<>();
-        temp.add("lipa");
         for(String team : listOfTeams){
             hashOfTeams.add(team);
         }
@@ -97,7 +98,6 @@ public class MainActivity extends Activity {
             intent.putExtra("teamName", buttonShow.getText());
             startActivity(intent);
         }
-
     }
     public void deleteTeamHandler(View v){
         RelativeLayout vwParentRow = (RelativeLayout)v.getParent();
