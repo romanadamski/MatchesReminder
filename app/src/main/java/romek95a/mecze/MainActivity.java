@@ -74,7 +74,7 @@ public class MainActivity extends Activity {
             hashOfTeams.add(team);
         }
         editor.putStringSet("teams", hashOfTeams);
-        editor.commit();
+        editor.apply();
         System.out.println("getStringSet: "+sharedPref.getStringSet("teams", temp));
     }
     @Override
@@ -103,29 +103,8 @@ public class MainActivity extends Activity {
         RelativeLayout vwParentRow = (RelativeLayout)v.getParent();
         Button buttonShow = (Button)vwParentRow.getChildAt(1);
         teamToDelete = buttonShow.getText().toString();
-        deleteDialog().show();
+        teamsAdapter.remove(teamToDelete);
         vwParentRow.refreshDrawableState();
-    }
-
-    private Dialog deleteDialog() {
-        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-        dialogBuilder.setTitle("Usuwanie drużyny");
-        dialogBuilder.setMessage("Czy na pewno chcesz usunąć " + teamToDelete + "?");
-        dialogBuilder.setNegativeButton("Nie", new Dialog.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int whichButton) {
-
-            }
-        });
-        dialogBuilder.setPositiveButton("Tak", new Dialog.OnClickListener(){
-            @Override
-            public void onClick(DialogInterface dialog, int whichButton) {
-                teamsAdapter.remove(teamToDelete);
-            }
-        });
-
-        dialogBuilder.setCancelable(false);
-        return dialogBuilder.create();
     }
 
     private Dialog noInternetDialog() {

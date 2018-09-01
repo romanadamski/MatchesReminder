@@ -23,8 +23,9 @@ public class MatchesViewActivity extends Activity {
     private TextView firstTeamAwayScore;
     private TextView firstDuring;
     private TextView separator;
+    private TextView nextMatches;
     Map<String, String> firstMatchMap;
-    Map<String, String> nexMatchesMap;
+    List<String> nextMatchesList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +38,7 @@ public class MatchesViewActivity extends Activity {
         firstTeamAwayScore = findViewById(R.id.firstTeamAwayScore);
         firstDuring = findViewById(R.id.firstDuring);
         separator = findViewById(R.id.separator);
+        nextMatches = findViewById(R.id.nextMatches);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             teamName = extras.getString("teamName");
@@ -45,8 +47,11 @@ public class MatchesViewActivity extends Activity {
         ParseHtml parseHtml = new ParseHtml(teamName);
         ElementsBefore elementsBefore = parseHtml.parse();
         firstMatchMap = parseHtml.firstMatchFinalInfo(elementsBefore.firstMatch);
+        nextMatchesList = parseHtml.nextMatchesFinalInfo(elementsBefore.nextMatches);
         getFirstMatchInfo(firstMatchMap);
-
+        for(String nextMatch : nextMatchesList){
+            nextMatches.append(nextMatch + "\n");
+        }
     }
     public void getFirstMatchInfo(Map<String, String> firstMatchMap){
         firstLeagueTime.setText(firstMatchMap.get("leagueTime"));

@@ -23,7 +23,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:hint="Wprowadź nazwę drużyny..."
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:textColor="#c5c5c5"/>
 
             <Button
                 android:id="@+id/addTeam"

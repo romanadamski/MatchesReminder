@@ -4,10 +4,13 @@ import android.os.AsyncTask;
 import android.util.Log;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
@@ -15,24 +18,12 @@ public class ParseHtml {
     ParseHtml(String teamName){
         this.teamName = teamName;
     }
-    String classFirstLeagueTimeEnd= "div.imso_mh__stts-l";
-    String classFirstTeamsScore = "div.imso_mh__tm-a-sts";
 
-    String classFirstLeagueTime1 = "div.imso-hide-overflow";
-    String classFirstLeagueTime2 = "span.imso-hide-overflow";
-    String classFirstDuring = "span.vVvqnf";
-    String classFirstTeamHomeName = "div.imso_mh__first-tn-ed";
-    String classFirstTeamAwayName = "div.imso_mh__second-tn-ed";
-    String classFirstTeamHomeScore = "div.imso_mh__l-tm-sc";
-    String classFirstTeamAwayScore = "div.imso_mh__r-tm-sc";
-
-
-    String teamName;
+    static String teamName;
     public ElementsBefore parse(){
         AsyncParse asyncParse = new AsyncParse();
         try {
-            ElementsBefore elementsBefore = asyncParse.execute().get();
-            return elementsBefore;
+            return asyncParse.execute().get();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -40,15 +31,15 @@ public class ParseHtml {
         }
         return null;
     }
-    class AsyncParse extends AsyncTask<String, String, ElementsBefore> {
+    static class AsyncParse extends AsyncTask<String, String, ElementsBefore> {
         @Override
         protected ElementsBefore doInBackground(String... strings) {
             try {
                 String link = "http://www.google.com/search?q=" + teamName;
                 String classFirstMatch = "div.abhAW";
-                String classNextMatches = "div.bkWMgd";
+                String classNextMatches = "table.ml-bs-u";
                 Document doc = Jsoup.connect(link).get();
-                Log.d("Link:", link);
+
                 Elements firstMatch = doc.select(classFirstMatch);
                 Elements nextMatches = doc.select(classNextMatches);
                 return new ElementsBefore(firstMatch, nextMatches);
@@ -60,6 +51,17 @@ public class ParseHtml {
     }
     public Map<String, String> firstMatchFinalInfo(Elements firstMatch){
         Map<String, String> firstMatchesMap = new HashMap<>();
+
+        String classFirstLeagueTimeEnd= "div.imso_mh__stts-l";
+        String classFirstTeamsScore = "div.imso_mh__tm-a-sts";
+
+        String classFirstLeagueTime1 = "div.imso-hide-overflow";
+        String classFirstLeagueTime2 = "span.imso-hide-overflow";
+        String classFirstDuring = "span.vVvqnf";
+        String classFirstTeamHomeName = "div.imso_mh__first-tn-ed";
+        String classFirstTeamAwayName = "div.imso_mh__second-tn-ed";
+        String classFirstTeamHomeScore = "div.imso_mh__l-tm-sc";
+        String classFirstTeamAwayScore = "div.imso_mh__r-tm-sc";
 
         String firstMatchLeagueTime1 = firstMatch.select(classFirstLeagueTimeEnd).select(classFirstLeagueTime1).text();
         String firstMatchLeagueTime2 = firstMatch.select(classFirstLeagueTimeEnd).select(classFirstLeagueTime2).text();
@@ -82,5 +84,37 @@ public class ParseHtml {
         firstMatchesMap.put("during", firstMatchDuring);
 
         return firstMatchesMap;
+    }
+    public List<String> nextMatchesFinalInfo(Elements elements){
+        List<String>  singleMatchesList = new ArrayList<>();
+        String classSingleCell = "td.ZhlJRc";
+        String classSingleMatchScore = "div.imspo_mt__tt-w";
+        String classDateNextMatches = "div.imspo_mt__ns-pm-s";
+        String classDatePreviousMatches = "div.imspo_mt__cmd";
+        String classLeague = "div.imspo_mt__lg-st-co";
+        Elements singleCells = elements.select(classSingleCell);
+        for(Element el : singleCells){
+            String singleScore = el.select(classSingleMatchScore).text();
+            String singleLeague = el.select(classLeague).text();
+            if(!singleLeague.equals("")){
+                singleLeague = singleLeague + "\n";
+            }
+            String singleDate = el.select(classDateNextMatches).text();
+            if(singleDate.equals("")){
+                singleDate = el.select(classDatePreviousMatches).text();
+            }
+            if((Character.isDigit(singleScore.charAt(0)))){
+                singleScore = singleScore.replace("---", Character.toString(singleScore.charAt(0)) + " -");
+                singleScore = singleScore.substring(2,singleScore.length()-4);
+            }
+            else{
+                singleScore = singleScore.replace("---", " - ");
+                singleScore = singleScore.substring(0,singleScore.length()-2);
+            }
+            String singleFinalInfo = singleLeague + singleDate + "\n" + singleScore;
+            singleMatchesList.add(singleFinalInfo);
+        }
+
+        return singleMatchesList;
     }
 }
