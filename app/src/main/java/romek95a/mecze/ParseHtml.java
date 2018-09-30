@@ -62,6 +62,9 @@ public class ParseHtml {
         String classFirstTeamAwayName = "div.imso_mh__second-tn-ed";
         String classFirstTeamHomeScore = "div.imso_mh__l-tm-sc";
         String classFirstTeamAwayScore = "div.imso_mh__r-tm-sc";
+        String classFirstMatchScorers = "div.imso_gs__gs-cont-ed";
+        String classFirstMatchTeamHomeScorers = "div.imso_gs__left-team";
+        String classFirstMatchTeamAwayScorers = "div.imso_gs__right-team";
 
         String firstMatchLeagueTime1 = firstMatch.select(classFirstLeagueTimeEnd).select(classFirstLeagueTime1).text();
         String firstMatchLeagueTime2 = firstMatch.select(classFirstLeagueTimeEnd).select(classFirstLeagueTime2).text();
@@ -72,7 +75,15 @@ public class ParseHtml {
         firstMatchTeamAwayName = firstMatchTeamAwayName.replace("-", "");
         String firstMatchTeamHomeScore = firstMatch.select(classFirstTeamsScore).select(classFirstTeamHomeScore).text();
         String firstMatchTeamAwayScore = firstMatch.select(classFirstTeamsScore).select(classFirstTeamAwayScore).text();
-
+        //ogarnac strniga
+        String firstMatchTeamHomeScorers = firstMatch.select(classFirstMatchScorers).select(classFirstMatchTeamHomeScorers).text();
+        String firstMatchTeamAwayScorers = firstMatch.select(classFirstMatchScorers).select(classFirstMatchTeamAwayScorers).text();
+        firstMatchTeamHomeScorers = firstMatchTeamHomeScorers.replace(", ","\n");
+        firstMatchTeamHomeScorers = firstMatchTeamHomeScorers.replace("+'","");
+        firstMatchTeamAwayScorers = firstMatchTeamAwayScorers.replace(", ","\n");
+        firstMatchTeamAwayScorers = firstMatchTeamAwayScorers.replace("+'","");
+        System.out.println("cipa " + firstMatchTeamHomeScorers);
+        System.out.println("cipa " + firstMatchTeamAwayScorers);
         if(!firstMatchLeagueTime1.equals(""))
             firstMatchesMap.put("leagueTime", firstMatchLeagueTime1);
         if(!firstMatchLeagueTime2.equals(""))
@@ -82,6 +93,8 @@ public class ParseHtml {
         firstMatchesMap.put("teamHomeScore", firstMatchTeamHomeScore);
         firstMatchesMap.put("teamAwayScore", firstMatchTeamAwayScore);
         firstMatchesMap.put("during", firstMatchDuring);
+        firstMatchesMap.put("homeTeamScorers", firstMatchTeamHomeScorers);
+        firstMatchesMap.put("awayTeamScorers", firstMatchTeamAwayScorers);
 
         return firstMatchesMap;
     }

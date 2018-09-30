@@ -24,6 +24,8 @@ public class MatchesViewActivity extends Activity {
     private TextView firstDuring;
     private TextView separator;
     private TextView nextMatches;
+    private TextView homeScorers;
+    private TextView awayScorers;
     Map<String, String> firstMatchMap;
     List<String> nextMatchesList;
     @Override
@@ -39,6 +41,9 @@ public class MatchesViewActivity extends Activity {
         firstDuring = findViewById(R.id.firstDuring);
         separator = findViewById(R.id.separator);
         nextMatches = findViewById(R.id.nextMatches);
+        homeScorers = findViewById(R.id.homeScorers);
+        awayScorers = findViewById(R.id.awayScorers);
+
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             teamName = extras.getString("teamName");
@@ -50,7 +55,7 @@ public class MatchesViewActivity extends Activity {
         nextMatchesList = parseHtml.nextMatchesFinalInfo(elementsBefore.nextMatches);
         getFirstMatchInfo(firstMatchMap);
         for(String nextMatch : nextMatchesList){
-            nextMatches.append(nextMatch + "\n");
+            nextMatches.append(nextMatch + "\n\n");
         }
     }
     public void getFirstMatchInfo(Map<String, String> firstMatchMap){
@@ -60,9 +65,11 @@ public class MatchesViewActivity extends Activity {
             firstTeamAwayName.setText(firstMatchMap.get("teamAwayName"));
             firstTeamHomeScore.setText(firstMatchMap.get("teamHomeScore"));
             firstTeamAwayScore.setText(firstMatchMap.get("teamAwayScore"));
-            firstTeamAwayScore.setText(firstMatchMap.get("teamAwayScore"));
+            homeScorers.setText(firstMatchMap.get("homeTeamScorers"));
+            awayScorers.setText(firstMatchMap.get("awayTeamScorers"));
             firstDuring.setText(firstMatchMap.get("during"));
             separator.setText("-");
+
         }
         else{
             firstLeagueTime.setVisibility(View.GONE);
@@ -73,6 +80,8 @@ public class MatchesViewActivity extends Activity {
             firstTeamAwayScore.setVisibility(View.GONE);
             firstDuring.setVisibility(View.GONE);
             separator.setVisibility(View.GONE);
+            homeScorers.setVisibility(View.GONE);
+            awayScorers.setVisibility(View.GONE);
         }
     }
 }
