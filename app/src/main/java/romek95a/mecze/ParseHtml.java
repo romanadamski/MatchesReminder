@@ -75,15 +75,14 @@ public class ParseHtml {
         firstMatchTeamAwayName = firstMatchTeamAwayName.replace("-", "");
         String firstMatchTeamHomeScore = firstMatch.select(classFirstTeamsScore).select(classFirstTeamHomeScore).text();
         String firstMatchTeamAwayScore = firstMatch.select(classFirstTeamsScore).select(classFirstTeamAwayScore).text();
-        //ogarnac strniga
+
         String firstMatchTeamHomeScorers = firstMatch.select(classFirstMatchScorers).select(classFirstMatchTeamHomeScorers).text();
         String firstMatchTeamAwayScorers = firstMatch.select(classFirstMatchScorers).select(classFirstMatchTeamAwayScorers).text();
         firstMatchTeamHomeScorers = firstMatchTeamHomeScorers.replace(", ","\n");
         firstMatchTeamHomeScorers = firstMatchTeamHomeScorers.replace("+'","");
         firstMatchTeamAwayScorers = firstMatchTeamAwayScorers.replace(", ","\n");
         firstMatchTeamAwayScorers = firstMatchTeamAwayScorers.replace("+'","");
-        System.out.println("cipa " + firstMatchTeamHomeScorers);
-        System.out.println("cipa " + firstMatchTeamAwayScorers);
+
         if(!firstMatchLeagueTime1.equals(""))
             firstMatchesMap.put("leagueTime", firstMatchLeagueTime1);
         if(!firstMatchLeagueTime2.equals(""))

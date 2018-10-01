@@ -53,7 +53,12 @@ public class MatchesViewActivity extends Activity {
         ElementsBefore elementsBefore = parseHtml.parse();
         firstMatchMap = parseHtml.firstMatchFinalInfo(elementsBefore.firstMatch);
         nextMatchesList = parseHtml.nextMatchesFinalInfo(elementsBefore.nextMatches);
+
         getFirstMatchInfo(firstMatchMap);
+        getNextMatchesInfo(nextMatchesList);
+
+    }
+    public void getNextMatchesInfo(List<String> nextMatchesList){
         for(String nextMatch : nextMatchesList){
             nextMatches.append(nextMatch + "\n\n");
         }

@@ -7,24 +7,17 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.PorterDuff;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
+
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -37,8 +30,8 @@ public class MainActivity extends Activity {
     private ListView teamsListView;
     private EditText team;
     private Button addTeam;
+    private TextView nextMatchPreview;
     private String teamToDelete = "";
-    private boolean isPressed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +44,7 @@ public class MainActivity extends Activity {
         teamsListView.setAdapter(teamsAdapter);
         team = findViewById(R.id.team);
         addTeam = findViewById(R.id.addTeam);
+        nextMatchPreview = findViewById(R.id.nextMatchPreview);
 
         addTeam.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,13 +63,11 @@ public class MainActivity extends Activity {
         SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         Set<String> hashOfTeams = new HashSet<>();
-        Set<String> temp = new HashSet<>();
         for(String team : listOfTeams){
             hashOfTeams.add(team);
         }
         editor.putStringSet("teams", hashOfTeams);
         editor.apply();
-        System.out.println("getStringSet: "+sharedPref.getStringSet("teams", temp));
     }
     @Override
     protected void onResume() {
